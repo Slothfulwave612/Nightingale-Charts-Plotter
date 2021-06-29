@@ -5,12 +5,18 @@ Author: Anmol Durgapal / @slothfulwave612
 """
 
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.colors import is_color_like
+from matplotlib.backends.backend_agg import RendererAgg
 import streamlit as st
 
 import default_values as dv
 from pizza import PizzaPlotter
+
+matplotlib.use("agg")
+
+_lock = RendererAgg.lock
 
 # set page-config
 st.set_page_config(page_title="Nightingale", page_icon=None, layout="wide", initial_sidebar_state='expanded')
@@ -570,15 +576,16 @@ if st.sidebar.button("Make Pizza Chart"):
         "credit_color": credit_color,
         
     }
-
+    
     # instantiate PizzaPlotter class
     obj = PizzaPlotter(default_dict)
     
-    # # plot the chart
+    # plot the chart
     fig, ax = obj.plot_pizza()
 
     # display chart
     st.pyplot(fig)
+
 
 # Credits Layout
 with st.sidebar.beta_expander("Download The Plot", expanded=False):
