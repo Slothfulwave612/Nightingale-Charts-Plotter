@@ -40,6 +40,7 @@ class PizzaPlotter:
         self.other_circle_lw = default_dict["other_circle_lw"]
         self.other_circle_ls = default_dict["other_circle_ls"]
         self.inner_circle_size = default_dict["inner_circle_size"]
+        self.inner_circle_limit = default_dict["inner_circle_limit"]
         self.choose_slice_colors = default_dict["choose_slice_colors"]
         self.slice_colors = default_dict["slice_colors"]
         self.slice_lw = default_dict["slice_lw"]
@@ -52,14 +53,12 @@ class PizzaPlotter:
         self.param_text_colors = default_dict["param_text_colors"]
         self.param_text_size = default_dict["param_text_size"]
         self.param_location = default_dict["param_location"]
-        self.choose_text_colors = default_dict["choose_text_colors"]
         self.value_text_color = default_dict["value_text_color"]
         self.value_text_size = default_dict["value_text_size"]
         self.value_boxstyle = default_dict["value_boxstyle"]
         self.box_pad = default_dict["box_pad"]
         self.box_ec = default_dict["box_ec"]
         self.box_lw = default_dict["box_lw"]
-        self.choose_box_fc = default_dict["choose_box_fc"]
         self.box_fc = default_dict["box_fc"]
 
         # TITLE AND SUBTITLE
@@ -85,6 +84,18 @@ class PizzaPlotter:
         self.credit_size = default_dict["credit_size"]
         self.credit_color = default_dict["credit_color"]
 
+        # manage newline
+        self.params = [x.replace("\\n", "\n") for x in self.params]
+        self.title = self.title.replace("\\n", "\n")
+        self.sub_title = self.sub_title.replace("\\n", "\n")
+        self.right_credit = self.right_credit.replace("\\n", "\n")
+
+        # manage float-integer value
+        self.values = [int(x) if x.is_integer() else x for x in self.values]
+
+        # blank colors
+        if self.slice_blank_colors != "same":
+            self.slice_blank_colors = [self.slice_blank_colors] * len(self.params)
 
     def load_fonts(self):
         # load the required fonts
@@ -93,6 +104,25 @@ class PizzaPlotter:
         font_normal = fm.FontProperties(fname="../fonts/BasierCircle-Regular.ttf")
 
         return font_bold, font_medium, font_normal
+
+    
+    def adjustFigAspect(self, fig, aspect=1):
+        '''
+        Adjust the subplot parameters so that the figure has the correct
+        aspect ratio.
+        '''
+        xsize,ysize = fig.get_size_inches()
+        minsize = min(xsize,ysize)
+        xlim = .4*minsize/xsize
+        ylim = .4*minsize/ysize
+        if aspect < 1:
+            xlim *= aspect
+        else:
+            ylim /= aspect
+        fig.subplots_adjust(left=.5-xlim,
+                            right=.5+xlim,
+                            bottom=.5-ylim,
+                            top=.5+ylim)
 
 
     def plot_pizza(self):
@@ -116,20 +146,71 @@ class PizzaPlotter:
             other_circle_ls=self.other_circle_ls
         )
 
+        baker_2 = PyPizza(
+            params=self.params,
+            background_color=self.background_color,
+            inner_circle_size=self.inner_circle_size,
+            straight_line_limit=self.straight_line_limit,
+            straight_line_color=self.slice_ec,
+            straight_line_lw=self.straight_line_lw,
+            straight_line_ls=self.straight_line_ls,
+            last_circle_color=self.last_circle_color,
+            last_circle_lw=self.last_circle_lw,
+            last_circle_ls=self.last_circle_ls,
+            other_circle_color=self.other_circle_color,
+            other_circle_lw=self.other_circle_lw,
+            other_circle_ls=self.other_circle_ls
+        )
+
+        if type(self.slice_colors) is list:
+            slice_cols = self.slice_colors
+            slice_fc = None
+        else:
+            slice_cols = None
+            slice_fc = self.slice_colors
+
+        if self.box_fc == "same":
+            if type(slice_cols) is list:
+                value_bck_colors = slice_cols
+                self.box_fc = None
+            else:
+                value_bck_colors = None
+                self.box_fc = slice_fc
+        else:
+            value_bck_colors = None
+
+        if self.value_boxstyle == "none":
+            bbox = dict(
+                color=self.value_text_color,
+                fontsize=self.value_text_size,
+                zorder=3, va="center"
+            )
+        else:
+            bbox = dict(
+                color=self.value_text_color,
+                fontsize=self.value_text_size,
+                bbox=dict(
+                    edgecolor=self.box_ec, facecolor=self.box_fc,
+                    boxstyle=f"{self.value_boxstyle},pad={self.box_pad}",
+                    lw=self.box_lw
+                ),
+                zorder=3, va="center"
+            )
+
         # plot pizza
         fig, ax = baker.make_pizza(
             values=self.values,
             bottom=self.bottom,
             figsize=(12, 12),
             param_location=self.param_location,
-            slice_colors=None,
+            slice_colors=slice_cols,
             value_colors=None,
-            value_bck_colors=None,
-            color_blank_space=[self.slice_blank_colors] * len(self.params),
+            value_bck_colors=value_bck_colors,
+            color_blank_space=self.slice_blank_colors,
             blank_alpha=self.transparency_blank_space,
 
             kwargs_slices=dict(
-                facecolor=self.slice_colors,
+                facecolor=slice_fc,
                 edgecolor=self.slice_ec,
                 linewidth=self.slice_lw,
                 zorder=2,
@@ -138,18 +219,28 @@ class PizzaPlotter:
             kwargs_params=dict(
                 color=self.param_text_colors,
                 fontsize=self.param_text_size,
+                va="center",
             ),
 
-            kwargs_values=dict(
-                color=self.value_text_color,
-                fontsize=self.value_text_size,
-                bbox=dict(
-                    edgecolor=self.box_ec, facecolor=self.box_fc,
-                    boxstyle=f"{self.value_boxstyle},pad={self.box_pad}",
-                    lw=self.box_lw
-                )
-            ),
+            kwargs_values=bbox
         )
+
+        baker.make_pizza(
+            values=[self.inner_circle_limit]*len(self.params),
+            bottom=-self.inner_circle_size,
+            ax=ax,
+            kwargs_slices=dict(
+                facecolor=self.background_color,
+                edgecolor=self.background_color,
+                linewidth=1,
+                zorder=3,
+            ),
+
+            kwargs_params=dict(alpha=0),
+            kwargs_values=dict(alpha=0),
+        )
+
+        self.adjustFigAspect(fig, 0.6)
 
         # add title
         fig.text(
@@ -166,7 +257,7 @@ class PizzaPlotter:
 
         # add credits
         CREDIT_1 = self.right_credit
-        CREDIT_2 = "Made Using: mplsoccer\nInspired By: @Worville, @FootballSlices, @somazerofc & @Soumyaj15209314"
+        CREDIT_2 = "Made Using: mplsoccer / Nightingale Chart Plotter\nInspired By: @Worville, @FootballSlices, @somazerofc & @Soumyaj15209314"
 
         fig.text(
             self.adjust_right_credit_x, self.adjust_right_credit_y, CREDIT_1,
