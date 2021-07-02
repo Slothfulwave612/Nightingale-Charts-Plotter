@@ -21,15 +21,9 @@ def get_your_plot(fig):
             key="Dots-per-Inch Value", help="Higher The Value Better The Resolution."
         )
 
-        # transparency
-        transparency = st.radio(
-            label="Transparent", options=["Yes", "No"],
-            index=1, key="Transparent", help="Downloaded plot will not have background. (file-format should be png)"
-        )
-
         # pad-inches
         pad_inches = st.number_input(
-            label="Pad Inches", value=0.03,
+            label="Pad Inches", value=0.03, format="%.3f",
             key="Pad Inches", help="Amount of padding around the plot."
         )
 
@@ -37,14 +31,8 @@ def get_your_plot(fig):
 
         # download
         if submit_button:
-            if transparency == "Yes":
-                transparency = True
-            else:
-                transparency = False
-
             # save figure
             fig.savefig(
                 fname=filename, format=file_format, dpi=dpi,
-                bbox_inches="tight",
-                transparent=transparency, pad_inches=pad_inches
+                bbox_inches="tight", pad_inches=pad_inches
             )

@@ -105,5 +105,79 @@ def edit_title_design(default_dict, session):
         )
 
         default_dict["sub_title_alignment"] = sub_title_alignment
+
+        # Legend
+        num_legends = st.number_input(
+            label="Number of Legend Text You Want To Add", min_value=0,
+            value=default_dict["num_legends"], key=session.run_id,
+            help="Number of Legend Text You Want To Add"
+        )
+
+        default_dict["num_legends"] = num_legends
+
+        if num_legends > 0:
+            legend_texts, legend_colors = [], []
+
+            for index in range(num_legends):
+                if len(default_dict["legend_texts"]) == 0 or index > len(default_dict["legend_texts"]) - 1:
+                    text_val = f"Legend Text {index+1}"
+                    color_val = "#4169e1" 
+                else:
+                    text_val = default_dict["legend_texts"][index]
+                    color_val = default_dict["legend_colors"][index]
+
+                temp_text = st.text_input(
+                    label=f"Enter Text For Legend {index+1}", value=text_val,
+                    key=session.run_id, help="Type the title for the visual."
+                )
+
+                temp_color = st.color_picker(
+                    label=f"Color For {temp_text}", value=color_val,
+                    key=session.run_id, help=f"Choose color for {temp_text} (Legend)"
+                )
+                
+                legend_texts.append(temp_text)
+                legend_colors.append(temp_color)
+
+            legend_space = st.number_input(
+                label=f"Space Between Legend", min_value=0,
+                value=default_dict["legend_space"],
+                key=session.run_id, help="How many spaces do you want between your legend texts?"
+            )
+
+            # fontsize for legend
+            legend_size = st.number_input(
+                label="Legend Fontsize", format="%.3f",
+                min_value=0.0, value=default_dict["legend_size"],
+                key=session.run_id, help="Choose fontsize for the legend."
+            )
+
+            # adjust legend (x-coordinate)
+            adjust_legend_x = st.number_input(
+                label="Adjust Legend (x-coord)",
+                value=default_dict["adjust_legend_x"], format="%.3f",
+                key=session.run_id, help="Adjust x-coordinate for the legend."
+            )
+
+            # adjust title (y-coordinate)
+            adjust_legend_y = st.number_input(
+                label="Adjust Legend (y-coord)", format="%.3f",
+                value=default_dict["adjust_legend_y"],
+                key=session.run_id, help="Adjust y-coordinate for the legend."
+            )
+
+            # legend-alignment
+            legend_alignment = st.radio(
+                label="Legend Horizontal Alignment", options=["center", "right", "left"],
+                index=0, key=session.run_id, help="Choose horizontal alingnment for legend text"
+            )
+
+            default_dict["legend_texts"] = legend_texts
+            default_dict["legend_colors"] = legend_colors
+            default_dict["legend_space"] = legend_space
+            default_dict["legend_size"] = legend_size
+            default_dict["adjust_legend_x"] = adjust_legend_x
+            default_dict["adjust_legend_y"] = adjust_legend_y
+            default_dict["legend_alignment"] = legend_alignment
     
     return default_dict, session

@@ -93,18 +93,18 @@ def edit_slice_design(default_dict, session):
 
         # get inner circles size
         inner_circle_size = st.number_input(
-            label="Inner Circle Size", min_value=0.0,
+            label="Center Circle Size",
             value=default_dict["inner_circle_size"], format="%.3f",
-            key=session.run_id, help="Enter size for the inner circle."
+            key=session.run_id, help="Enter size for the center circle. (To change circle size - the value for Center Circle Size and Straight Line Lower Limit should be close to each other)"
         )
 
         default_dict["inner_circle_size"] = inner_circle_size
 
         # get inner circles size
         inner_circle_limit = st.number_input(
-            label="Inner Circle Limit", min_value=0.0,
+            label="Straight Line Lower Limit",
             value=default_dict["inner_circle_limit"], format="%.3f",
-            key=session.run_id, help="Boundary of Inner Circle"
+            key=session.run_id, help="Straight Line Lower Limit (To change circle size - the value for Center Circle Size and Straight Line Lower Limit should be close to each other)"
         )
 
         default_dict["inner_circle_limit"] = inner_circle_limit
@@ -129,11 +129,21 @@ def edit_slice_design(default_dict, session):
         else:
             slice_colors = []
 
+            if type(default_dict["slice_colors"]) is str:
+                default_dict["slice_colors"] = [default_dict["slice_colors"]] * len(default_dict["params"])
+
             for index, param in enumerate(default_dict["params"]):
-                param = param.replace("\\n", ' ').replace("\\t", ' ')
+                if index > default_dict["num_params"] - 1:
+                    param_name = f"Parameter {index+1}"
+                    value = default_dict["slice_colors"][-1]
+                else:
+                    param_name = default_dict["params"][index]
+                    value = default_dict["slice_colors"][index]
+
+                param = param_name.replace("\\n", ' ').replace("\\t", ' ')
                 temp_color = st.color_picker(
-                    label=f"Color For {param} Slice", value=default_dict["slice_colors"][index],
-                    key=session.run_id, help=f"Choose color for {param} Slice"
+                    label=f"Color For {param_name} Slice", value=value,
+                    key=session.run_id, help=f"Choose color for {param_name} Slice"
                 )
                 slice_colors.append(temp_color)
         
@@ -168,7 +178,10 @@ def edit_slice_design(default_dict, session):
 
         if choose_slice_blank_colors == "Same Color As The Slices":
             slice_blank_colors = "same"
+            
         elif choose_slice_blank_colors == "Different Color":
+            if default_dict["slice_blank_colors"] == "same": default_dict["slice_blank_colors"] = "#4169e1"
+            
             slice_blank_colors = st.color_picker(
                 label=f"Color For Blank Space", value=default_dict["slice_blank_colors"],
                 key=session.run_id, help=f"Choose color for blank space for all slices"

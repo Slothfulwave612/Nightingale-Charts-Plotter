@@ -7,6 +7,7 @@ Author: Anmol Durgapal / @slothfulwave612
 import matplotlib.pyplot as plt
 from matplotlib import font_manager as fm
 from mplsoccer import PyPizza
+from highlight_text import fig_text
 
 class PizzaPlotter:
     """A class for plotting pizza charts using mplsoccer.
@@ -74,6 +75,14 @@ class PizzaPlotter:
         self.adjust_sub_title_x = default_dict["adjust_sub_title_x"]
         self.adjust_sub_title_y = default_dict["adjust_sub_title_y"]
         self.sub_title_alignment = default_dict["sub_title_alignment"]
+        self.num_legends = default_dict["num_legends"]
+        self.legend_texts = default_dict["legend_texts"]
+        self.legend_colors = default_dict["legend_colors"]
+        self.legend_space = default_dict["legend_space"]
+        self.legend_size = default_dict["legend_size"]
+        self.adjust_legend_x = default_dict["adjust_legend_x"]
+        self.adjust_legend_y = default_dict["adjust_legend_y"]
+        self.legend_alingment = default_dict["legend_alignment"]
 
         # CREDITS
         self.right_credit = default_dict["right_credit"]
@@ -99,9 +108,9 @@ class PizzaPlotter:
 
     def load_fonts(self):
         # load the required fonts
-        font_bold = fm.FontProperties(fname="../fonts/BasierCircle-Bold.ttf")
-        font_medium = fm.FontProperties(fname="../fonts/BasierCircle-Medium.ttf")
-        font_normal = fm.FontProperties(fname="../fonts/BasierCircle-Regular.ttf")
+        font_bold = fm.FontProperties(fname="fonts/BasierCircle-Bold.ttf")
+        font_medium = fm.FontProperties(fname="fonts/BasierCircle-Medium.ttf")
+        font_normal = fm.FontProperties(fname="fonts/BasierCircle-Regular.ttf")
 
         return font_bold, font_medium, font_normal
 
@@ -146,28 +155,13 @@ class PizzaPlotter:
             other_circle_ls=self.other_circle_ls
         )
 
-        baker_2 = PyPizza(
-            params=self.params,
-            background_color=self.background_color,
-            inner_circle_size=self.inner_circle_size,
-            straight_line_limit=self.straight_line_limit,
-            straight_line_color=self.slice_ec,
-            straight_line_lw=self.straight_line_lw,
-            straight_line_ls=self.straight_line_ls,
-            last_circle_color=self.last_circle_color,
-            last_circle_lw=self.last_circle_lw,
-            last_circle_ls=self.last_circle_ls,
-            other_circle_color=self.other_circle_color,
-            other_circle_lw=self.other_circle_lw,
-            other_circle_ls=self.other_circle_ls
-        )
-
         if type(self.slice_colors) is list:
             slice_cols = self.slice_colors
             slice_fc = None
         else:
             slice_cols = None
             slice_fc = self.slice_colors
+
 
         if self.box_fc == "same":
             if type(slice_cols) is list:
@@ -178,6 +172,7 @@ class PizzaPlotter:
                 self.box_fc = slice_fc
         else:
             value_bck_colors = None
+
 
         if self.value_boxstyle == "none":
             bbox = dict(
@@ -196,6 +191,7 @@ class PizzaPlotter:
                 ),
                 zorder=3, va="center"
             )
+
 
         # plot pizza
         fig, ax = baker.make_pizza(
@@ -232,7 +228,7 @@ class PizzaPlotter:
             kwargs_slices=dict(
                 facecolor=self.background_color,
                 edgecolor=self.background_color,
-                linewidth=1,
+                linewidth=0,
                 zorder=3,
             ),
 
@@ -254,6 +250,18 @@ class PizzaPlotter:
             size=self.sub_title_size, ha=self.sub_title_alignment,
             fontproperties=font_normal, color=self.sub_title_color
         )
+
+        # add legend
+        if self.num_legends > 0:
+            temp_text = (' ' * self.legend_space).join(['<' + x + '>' for x in self.legend_texts])
+
+            fig_text(
+                self.adjust_legend_x, self.adjust_legend_y, s=temp_text,
+                fontsize=self.legend_size, fontproperties=font_bold,
+                highlight_textprops=[{"color": x} for x in self.legend_colors],
+                ha=self.legend_alingment, fig=fig,
+            )
+
 
         # add credits
         CREDIT_1 = self.right_credit

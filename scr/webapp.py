@@ -82,6 +82,8 @@ default_dict, session = edit_credit_design(default_dict, session)
 
 # <---------------- PLOT PIZZA ----------------> #
 
+
+
 try:
     # instantiate PizzaPlotter class
     obj = PizzaPlotter(default_dict)
@@ -93,12 +95,7 @@ try:
     st.pyplot(fig, bbox_inches="tight", pad_inches=0.035)
 except Exception as e:
     st.error(e)
-# <---------------- PLOT PIZZA ----------------> #
-
-
-
-# <---------------- DOWNLOAD ----------------> #
-
-# Generate & Save
-st.sidebar.subheader("Save The Plot")
-get_your_plot(fig)
+else:
+    # Generate & Save
+    st.sidebar.subheader("Save The Plot")
+    get_your_plot(fig)
