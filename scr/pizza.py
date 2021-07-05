@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager as fm
 from mplsoccer import PyPizza
 from highlight_text import fig_text
+import streamlit as st
 
 class PizzaPlotter:
     """A class for plotting pizza charts using mplsoccer.
@@ -106,6 +107,7 @@ class PizzaPlotter:
         if self.slice_blank_colors != "same":
             self.slice_blank_colors = [self.slice_blank_colors] * len(self.params)
 
+    @st.cache(ttl=3600*24, show_spinner=False)
     def load_fonts(self):
         # load the required fonts
         font_bold = fm.FontProperties(fname="fonts/BasierCircle-Bold.ttf")
