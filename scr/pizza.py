@@ -228,7 +228,7 @@ class PizzaPlotter:
             kwargs_slices=dict(
                 facecolor=self.background_color,
                 edgecolor=self.background_color,
-                linewidth=0,
+                linewidth=1,
                 zorder=3,
             ),
 

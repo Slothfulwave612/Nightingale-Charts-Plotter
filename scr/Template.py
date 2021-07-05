@@ -5,7 +5,7 @@ def choose_template(session):
         template = st.selectbox(
             "Select Template",
             options=["Light Theme Pizza", "Dark Theme Pizza", "Colorful Pizza (Light)", "Colorful Pizza (Dark)"],
-            index=0, help="Select Template"
+            index=2, help="Select Template"
         )
 
         # generate template
