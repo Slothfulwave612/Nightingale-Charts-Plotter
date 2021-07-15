@@ -26,7 +26,7 @@ def background_and_title():
         </center>
         <center>
             <i>Make Percentile Nightingale-Charts / Pizza-Charts with a few clicks.<br>This webapp uses <a href="https://mplsoccer.readthedocs.io/" target="_blank">mplsoccer</a> 
-            to make the nightingale-charts.</i>
+            to make the nightingale-charts.<br>To download your plot, right-click on the image and click on <i>Save image as.</i>
             <br>
             <hr>
             <br>
