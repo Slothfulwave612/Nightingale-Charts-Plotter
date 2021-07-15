@@ -1,13 +1,14 @@
 import streamlit as st
 
-def edit_text_design(default_dict, session):
+def edit_text_design(default_dict):
     # TEXT DESIGN LAYOUT
-    with st.sidebar.beta_expander("Text Design Layout", expanded=False):
+    with st.beta_expander("Text Design Layout", expanded=False):
         
         # param-text colors
         param_text_colors = st.color_picker(
             label="Parameter Text Color", value=default_dict["param_text_colors"],
-            key=session.run_id, help="Choose color for all the parameter texts"
+            help="Choose color for all the parameter texts",
+            key=f"param_text_colors_{st.session_state.run}"
         )
 
         default_dict["param_text_colors"] = param_text_colors
@@ -16,7 +17,8 @@ def edit_text_design(default_dict, session):
         param_text_size = st.number_input(
             label="Parameter Texts Fontsize", format="%.3f",
             min_value=0.0, value=default_dict["param_text_size"],
-            key=session.run_id, help="Choose fontsize for parameter texts"
+            help="Choose fontsize for parameter texts",
+            key=f"param_text_size_{st.session_state.run}"
         )
 
         default_dict["param_text_size"] = param_text_size
@@ -25,7 +27,8 @@ def edit_text_design(default_dict, session):
         param_location = st.number_input(
             label="Parameter Location", format="%.3f",
             min_value=0.0, value=default_dict["param_location"],
-            key=session.run_id, help="Choose location for parameter texts"
+            help="Choose location for parameter texts",
+            key=f"param_location"
         )
 
         default_dict["param_location"] = param_location
@@ -33,7 +36,7 @@ def edit_text_design(default_dict, session):
         # value text color
         value_text_color = st.color_picker(
             label="Choose Value Text Color", value=default_dict["value_text_color"],
-            key=session.run_id, help="Choose color for all the slices"
+            help="Choose color for all the slices", key=f"value_text_color_{st.session_state.run}"
         )
      
         default_dict["value_text_color"] = value_text_color
@@ -42,7 +45,7 @@ def edit_text_design(default_dict, session):
         value_text_size = st.number_input(
             label="Value Texts Fontsize", format="%.3f",
             min_value=0.0, value=default_dict["value_text_size"],
-            key=session.run_id, help="Choose fontsize for value texts"
+            help="Choose fontsize for value texts", key=f"value_text_size_{st.session_state.run}"
         )
         
         default_dict["value_text_size"] = value_text_size
@@ -50,7 +53,7 @@ def edit_text_design(default_dict, session):
         # get boxstyle for value-text
         value_boxstyle = st.selectbox(
             label="Boxstyle For Value Text", options=["none", "circle", "round", "round4", "roundtooth", "sawtooth", "square"],
-            index=default_dict["value_boxstyle"], key=session.run_id,
+            index=default_dict["value_boxstyle"], key=f"value_boxstyle",
             help="Choose a boxstyle for the value-text."
         )
 
@@ -60,7 +63,7 @@ def edit_text_design(default_dict, session):
         box_pad = st.number_input(
             label="Padding Value For Box", format="%.3f",
             min_value=0.0, value=default_dict["box_pad"],
-            key=session.run_id, help="Choose padding-value for box."
+            help="Choose padding-value for box.", key=f"box_pad_{st.session_state.run}"
         )
 
         default_dict["box_pad"] = box_pad
@@ -68,7 +71,7 @@ def edit_text_design(default_dict, session):
         # edgecolor for box
         box_ec = st.color_picker(
             label="Edgecolor For Box", value=default_dict["box_ec"],
-            key=session.run_id, help="Choose edgecolor for box."
+            help="Choose edgecolor for box.", key=f"box_ec_{st.session_state.run}"
         )
 
         default_dict["box_ec"] = box_ec
@@ -77,27 +80,18 @@ def edit_text_design(default_dict, session):
         box_lw = st.number_input(
             label="Linewidth For Box", format="%.3f",
             min_value=0.0, value=default_dict["box_lw"],
-            key=session.run_id, help="Choose linewidth for box."
+            help="Choose linewidth for box.", key=f"box_lw_{st.session_state.run}"
         )
 
         default_dict["box_lw"] = box_lw
 
-        # choose option for box facecolor
-        choose_box_fc = st.radio(
-            label="Choose Box Facecolor", options=["Same Color As The Slice", "Different Color"],
-            index=default_dict["choose_box_fc"], key=session.run_id, help="Choose the required box facecolor."
-        )
-
-        if choose_box_fc == "Different Color":
-            if default_dict["box_fc"] == "same": default_dict["box_fc"] = "#222222"
-            # box facecolor
+        # box facecolor
+        if default_dict["box_fc"] != "same":
             box_fc = st.color_picker(
-                    label="Choose Facecolor For All Boxes", value=default_dict["box_fc"],
-                    key=session.run_id, help="Choose facecolor for all the boxes"
-                )
-        else:
-            box_fc = "same"
+                label="Choose Facecolor For All Boxes", value=default_dict["box_fc"],
+                help="Choose facecolor for all the boxes", key=f"box_fc_{st.session_state.run}"
+            )
 
-        default_dict["box_fc"] = box_fc
+            default_dict["box_fc"] = box_fc
             
-    return default_dict, session
+    return default_dict

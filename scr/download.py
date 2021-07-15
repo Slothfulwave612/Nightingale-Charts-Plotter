@@ -1,4 +1,6 @@
 import streamlit as st
+from tempfile import NamedTemporaryFile
+import base64
 
 def get_your_plot(fig):
     with st.sidebar.form(key='my_form'):
@@ -31,8 +33,5 @@ def get_your_plot(fig):
 
         # download
         if submit_button:
-            # save figure
-            fig.savefig(
-                fname=filename, format=file_format, dpi=dpi,
-                bbox_inches="tight", pad_inches=pad_inches
-            )
+            pass
+    

@@ -43,11 +43,9 @@ class PizzaPlotter:
         self.other_circle_ls = default_dict["other_circle_ls"]
         self.inner_circle_size = default_dict["inner_circle_size"]
         self.inner_circle_limit = default_dict["inner_circle_limit"]
-        self.choose_slice_colors = default_dict["choose_slice_colors"]
         self.slice_colors = default_dict["slice_colors"]
         self.slice_lw = default_dict["slice_lw"]
         self.slice_ec = default_dict["slice_ec"]
-        self.choose_slice_blank_colors = default_dict["choose_slice_blank_colors"]
         self.slice_blank_colors = default_dict["slice_blank_colors"]
         self.transparency_blank_space = default_dict["transparency_blank_space"]
 
@@ -77,9 +75,8 @@ class PizzaPlotter:
         self.adjust_sub_title_y = default_dict["adjust_sub_title_y"]
         self.sub_title_alignment = default_dict["sub_title_alignment"]
         self.num_legends = default_dict["num_legends"]
-        self.legend_texts = default_dict["legend_texts"]
-        self.legend_colors = default_dict["legend_colors"]
-        self.legend_space = default_dict["legend_space"]
+        self.legend_texts = default_dict["legend_texts"].strip()
+        self.legend_space = int(default_dict["legend_space"])
         self.legend_size = default_dict["legend_size"]
         self.adjust_legend_x = default_dict["adjust_legend_x"]
         self.adjust_legend_y = default_dict["adjust_legend_y"]
@@ -254,13 +251,23 @@ class PizzaPlotter:
         )
 
         # add legend
-        if self.num_legends > 0:
-            temp_text = (' ' * self.legend_space).join(['<' + x + '>' for x in self.legend_texts])
+        if len(self.legend_texts) > 0:
+            # fetch colors
+            used = set()
+            colors = [x for x in self.slice_colors if x not in used and (used.add(x) or True)]
+
+            # fetch texts
+            legend_texts = self.legend_texts.split(' ')
+            legend_texts = [x.replace('~', ' ') for x in legend_texts]
+
+            colors = colors + [colors[-1] * (len(legend_texts) - len(colors))]
+            temp_text = (' ' * self.legend_space).join(['<' + x + '>' for x in legend_texts])
+            high_colors = [{"color": x} for x in colors[:len(legend_texts)]]
 
             fig_text(
                 self.adjust_legend_x, self.adjust_legend_y, s=temp_text,
                 fontsize=self.legend_size, fontproperties=font_bold,
-                highlight_textprops=[{"color": x} for x in self.legend_colors],
+                highlight_textprops=high_colors,
                 ha=self.legend_alingment, fig=fig,
             )
 

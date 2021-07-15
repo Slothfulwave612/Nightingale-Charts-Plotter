@@ -1,13 +1,14 @@
 import streamlit as st
 
-def edit_title_design(default_dict, session):
+def edit_title_design(default_dict, template):
 
     # Title and Subtitle
-    with st.sidebar.beta_expander("Title & Subtitle Layout", expanded=False):
+    with st.beta_expander("Title & Subtitle Layout", expanded=False):
         # title
         title = st.text_input(
             label="Enter The Title", value=default_dict["title"],
-            key=session.run_id, help="Type the title for the visual."
+            help="Type the title for the visual.",
+            key=f"title_{st.session_state.run}"
         )
 
         default_dict["title"] = title
@@ -16,7 +17,8 @@ def edit_title_design(default_dict, session):
         title_size = st.number_input(
             label="Title Fontsize", format="%.3f",
             min_value=0.0, value=default_dict["title_size"],
-            key=session.run_id, help="Choose fontsize for the title."
+            help="Choose fontsize for the title.",
+            key=f"title_size_{st.session_state.run}"
         )
 
         default_dict["title_size"] = title_size
@@ -24,7 +26,8 @@ def edit_title_design(default_dict, session):
         # title color
         title_color = st.color_picker(
             label=f"Title Fontcolor", value=default_dict["title_color"],
-            key=session.run_id, help=f"Choose fontcolor for the title."
+            help=f"Choose fontcolor for the title.",
+            key=f"title_color_{st.session_state.run}"
         )
 
         default_dict["title_color"] = title_color
@@ -32,8 +35,8 @@ def edit_title_design(default_dict, session):
         # adjust title (x-coordinate)
         adjust_title_x = st.number_input(
             label="Adjust Title (x-coord)", value=default_dict["adjust_title_x"],
-            format="%.3f",
-            key=session.run_id, help="Adjust x-coordinate for the title."
+            format="%.3f", key=f"adjust_title_x_{st.session_state.run}",
+            help="Adjust x-coordinate for the title."
         )
 
         default_dict["adjust_title_x"] = adjust_title_x
@@ -41,8 +44,8 @@ def edit_title_design(default_dict, session):
         # adjust title (y-coordinate)
         adjust_title_y = st.number_input(
             label="Adjust Title (y-coord)", value=default_dict["adjust_title_y"],
-            format="%.3f",
-            key=session.run_id, help="Adjust y-coordinate for the title."
+            format="%.3f", key=f"adjust_title_y_{st.session_state.run}",
+            help="Adjust y-coordinate for the title."
         )
 
         default_dict["adjust_title_y"] = adjust_title_y
@@ -50,7 +53,8 @@ def edit_title_design(default_dict, session):
         # title-alignment
         title_alignment = st.radio(
             label="Title Horizontal Alignment", options=["center", "right", "left"],
-            index=0, key=session.run_id, help="Choose horizontal alingnment for title text"
+            index=0, help="Choose horizontal alingnment for title text",
+            key=f"title_alignment_{st.session_state.run}"
         )
 
         default_dict["title_alignment"] = title_alignment
@@ -58,7 +62,8 @@ def edit_title_design(default_dict, session):
         # sub-title
         sub_title = st.text_input(
             label="Enter The Sub-Title", value=default_dict["sub_title"],
-            key=session.run_id, help="Type the sub-title for the visual."
+            help="Type the sub-title for the visual.",
+            key=f"sub_title_{st.session_state.run}"
         )
 
         default_dict["sub_title"] = sub_title
@@ -67,7 +72,8 @@ def edit_title_design(default_dict, session):
         sub_title_size = st.number_input(
             label="Sub-Title Fontsize", format="%.3f",
             min_value=0.0, value=default_dict["sub_title_size"],
-            key=session.run_id, help="Choose fontsize for the sub-title."
+            help="Choose fontsize for the sub-title.",
+            key=f"sub_title_size_{st.session_state.run}"
         )
 
         default_dict["sub_title_size"] = sub_title_size
@@ -75,7 +81,8 @@ def edit_title_design(default_dict, session):
         # title color
         sub_title_color = st.color_picker(
             label=f"Sub-Title Fontcolor", value=default_dict["sub_title_color"],
-            key=session.run_id, help=f"Choose fontcolor for the sub-title."
+            help=f"Choose fontcolor for the sub-title.",
+            key=f"sub_title_color_{st.session_state.run}"
         )
 
         default_dict["sub_title_color"] = sub_title_color
@@ -84,7 +91,8 @@ def edit_title_design(default_dict, session):
         adjust_sub_title_x = st.number_input(
             label="Adjust Sub-Title (x-coord)",
             value=default_dict["adjust_sub_title_x"], format="%.3f",
-            key=session.run_id, help="Adjust x-coordinate for the sub-title."
+            help="Adjust x-coordinate for the sub-title.",
+            key=f"adjust_sub_title_x_{st.session_state.run}"
         )
 
         default_dict["adjust_sub_title_x"] = adjust_sub_title_x
@@ -93,7 +101,8 @@ def edit_title_design(default_dict, session):
         adjust_sub_title_y = st.number_input(
             label="Adjust Sub-Title (y-coord)", format="%.3f",
             value=default_dict["adjust_sub_title_y"],
-            key=session.run_id, help="Adjust y-coordinate for the sub-title."
+            help="Adjust y-coordinate for the sub-title.",
+            key=f"adjust_sub_title_y_{st.session_state.run}"
         )
 
         default_dict["adjust_sub_title_y"] = adjust_sub_title_y
@@ -101,83 +110,61 @@ def edit_title_design(default_dict, session):
         # sub-title-alignment
         sub_title_alignment = st.radio(
             label="Sub-Title Horizontal Alignment", options=["center", "right", "left"],
-            index=0, key=session.run_id, help="Choose horizontal alingnment for sub-title text"
+            index=0, help="Choose horizontal alingnment for sub-title text",
+            key=f"sub_title_alignment_{st.session_state.run}"
         )
 
         default_dict["sub_title_alignment"] = sub_title_alignment
 
-        # Legend
-        num_legends = st.number_input(
-            label="Number of Legend Text You Want To Add", min_value=0,
-            value=default_dict["num_legends"], key=session.run_id,
-            help="Number of Legend Text You Want To Add"
-        )
-
-        default_dict["num_legends"] = num_legends
-
-        if num_legends > 0:
-            legend_texts, legend_colors = [], []
-
-            for index in range(num_legends):
-                if len(default_dict["legend_texts"]) == 0 or index > len(default_dict["legend_texts"]) - 1:
-                    text_val = f"Legend Text {index+1}"
-                    color_val = "#4169e1" 
-                else:
-                    text_val = default_dict["legend_texts"][index]
-                    color_val = default_dict["legend_colors"][index]
-
-                temp_text = st.text_input(
-                    label=f"Enter Text For Legend {index+1}", value=text_val,
-                    key=session.run_id, help="Type the title for the visual."
-                )
-
-                temp_color = st.color_picker(
-                    label=f"Color For {temp_text}", value=color_val,
-                    key=session.run_id, help=f"Choose color for {temp_text} (Legend)"
-                )
-                
-                legend_texts.append(temp_text)
-                legend_colors.append(temp_color)
+        if template in ["Colorful Pizza (Light)", "Colorful Pizza (Dark)"]:
+            # legend-text
+            legend_texts = st.text_input(
+                label=f"Enter Legend Text Seperated By Space", value=default_dict["legend_texts"],
+                help="Type the legends for the visual.", key=f"legend_texts_{st.session_state.run}"
+            )
 
             legend_space = st.number_input(
                 label=f"Space Between Legend", min_value=0,
-                value=default_dict["legend_space"],
-                key=session.run_id, help="How many spaces do you want between your legend texts?"
+                value=default_dict["legend_space"], key=f"legend_space_{st.session_state.run}",
+                help="How many spaces do you want between your legend texts?"
             )
 
             # fontsize for legend
             legend_size = st.number_input(
                 label="Legend Fontsize", format="%.3f",
                 min_value=0.0, value=default_dict["legend_size"],
-                key=session.run_id, help="Choose fontsize for the legend."
+                help="Choose fontsize for the legend.",
+                key=f"legend_size_{st.session_state.run}"
             )
 
             # adjust legend (x-coordinate)
             adjust_legend_x = st.number_input(
                 label="Adjust Legend (x-coord)",
                 value=default_dict["adjust_legend_x"], format="%.3f",
-                key=session.run_id, help="Adjust x-coordinate for the legend."
+                help="Adjust x-coordinate for the legend.",
+                key=f"adjust_legend_x_{st.session_state.run}"
             )
 
             # adjust title (y-coordinate)
             adjust_legend_y = st.number_input(
                 label="Adjust Legend (y-coord)", format="%.3f",
                 value=default_dict["adjust_legend_y"],
-                key=session.run_id, help="Adjust y-coordinate for the legend."
+                help="Adjust y-coordinate for the legend.",
+                key=f"adjust_legend_y_{st.session_state.run}"
             )
 
             # legend-alignment
             legend_alignment = st.radio(
                 label="Legend Horizontal Alignment", options=["center", "right", "left"],
-                index=0, key=session.run_id, help="Choose horizontal alingnment for legend text"
+                index=0, help="Choose horizontal alingnment for legend text",
+                key=f"legend_alignment_{st.session_state.run}"
             )
 
             default_dict["legend_texts"] = legend_texts
-            default_dict["legend_colors"] = legend_colors
             default_dict["legend_space"] = legend_space
             default_dict["legend_size"] = legend_size
             default_dict["adjust_legend_x"] = adjust_legend_x
             default_dict["adjust_legend_y"] = adjust_legend_y
             default_dict["legend_alignment"] = legend_alignment
     
-    return default_dict, session
+    return default_dict

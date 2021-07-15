@@ -25,7 +25,7 @@ def background_and_title():
             <h1>Nightingale Chart Plotter</h1>
         </center>
         <center>
-            <i>Make Percentile Nightingale-Charts / Pizza-Charts with a few clicks.<br>This webapp uses <a href="https://mplsoccer.readthedocs.io/" target="_blank">mplsoocer</a> 
+            <i>Make Percentile Nightingale-Charts / Pizza-Charts with a few clicks.<br>This webapp uses <a href="https://mplsoccer.readthedocs.io/" target="_blank">mplsoccer</a> 
             to make the nightingale-charts.</i>
             <br>
             <hr>

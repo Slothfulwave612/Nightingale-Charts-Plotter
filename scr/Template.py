@@ -1,6 +1,6 @@
 import streamlit as st
 
-def choose_template(session):
+def choose_template():
     with st.sidebar.form(key='template_form'):
         template = st.selectbox(
             "Select Template",
@@ -11,19 +11,24 @@ def choose_template(session):
         # generate template
         submit_button = st.form_submit_button(label='Generate Template')
 
-        # download
         if submit_button:
-            session.run_id += 1
+            gen_temp = True
+            st.session_state.run += 1
+        else:
+            gen_temp = False
 
-    return template, session
+            if st.session_state.get("run") is None:
+                st.session_state.run = 0
+
+    return template, gen_temp
 
 
-def pick_params(default_dict, session):
+def pick_params(default_dict):
     # sidebar - user input for params
     num_params = st.sidebar.number_input(
         label="Total Number of Parameters", min_value=1,
-        value=default_dict["num_params"],
-        key=session.run_id, help="How many parameters do you have?"
+        value=default_dict["num_params"], key=f"num_params_{st.session_state.run}",
+        help="How many parameters do you have?"
     )
 
-    return num_params, session
+    return num_params
