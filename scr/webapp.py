@@ -89,7 +89,7 @@ if plot_fig:
         fig, ax = obj.plot_pizza()
 
         # display chart
-        st.pyplot(fig, bbox_inches="tight", pad_inches=0.035, dpi=550)
+        st.pyplot(fig, bbox_inches="tight", pad_inches=0.035, dpi=300, format="jpg")
 
     except Exception as e:
         st.error(e)
