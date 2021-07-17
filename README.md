@@ -16,7 +16,9 @@
 
   2. **Create a New Conda Environment:**
 
-      * Make a new environment for using this app. Run the following command: `conda create -n streamlit_env python=3.8.10`
+      * Make a new environment for using this app. Run the following command:
+      
+        `conda create -n streamlit_env python=3.8.10`
         
       * Move to the new environment: `conda activate streamlit_env`
 
