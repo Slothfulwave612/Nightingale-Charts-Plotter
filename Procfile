@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit run scr/webapp.py [-- .streamlit/config.toml]
+web: sh setup.sh && streamlit run src/webapp.py [-- .streamlit/config.toml]

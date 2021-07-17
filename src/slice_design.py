@@ -7,7 +7,7 @@ def edit_slice_design(default_dict, template, num_params):
         # get background color
         background_color = st.color_picker(
             label="Background Color", value=default_dict["background_color"],
-            help="Choose a color for your plot's background.", key=f"background_color_{st.session_state.run}"
+            help="Background Color For The Whole Plot.", key=f"background_color_{st.session_state.run}"
         )
 
         default_dict["background_color"] = background_color
@@ -15,7 +15,7 @@ def edit_slice_design(default_dict, template, num_params):
         # get straight line color
         straight_line_color = st.color_picker(
             label="Straight Line Color", value=default_dict["straight_line_color"],
-            help="Choose a color for the straight lines in the plot.", key=f"straight_line_color_{st.session_state.run}"
+            help="Lines That Divides The Slices.", key=f"straight_line_color_{st.session_state.run}"
         )
 
         default_dict["straight_line_color"] = straight_line_color
@@ -24,7 +24,7 @@ def edit_slice_design(default_dict, template, num_params):
         straight_line_lw = st.number_input(
             label="Straight Line Linewidth", min_value=0.0,
             value=default_dict["straight_line_lw"], format="%.3f",
-            help="Enter linewidth for the straight lines.", key=f"straight_line_lw_{st.session_state.run}"
+            help="Lines That Divides The Slices.", key=f"straight_line_lw_{st.session_state.run}"
         )
 
         default_dict["straight_line_lw"] = straight_line_lw
@@ -33,33 +33,33 @@ def edit_slice_design(default_dict, template, num_params):
         straight_line_ls = st.selectbox(
             label="Straight-Line Linestyle", options=["None", "solid", "dashed", "dashdot", "dotted"],
             index=default_dict["straight_line_ls"], key=f"straight_line_ls_{st.session_state.run}",
-            help="Choose a linestyle for the straight lines."
+            help="Lines That Divides The Slices.."
         )
 
         default_dict["straight_line_ls"] = straight_line_ls
 
         # get last circle color
         last_circle_color = st.color_picker(
-            label="Last Circle Color", value=default_dict["last_circle_color"],
-            help="Choose a color for the last circle in the plot.", key=f"last_circle_color_{st.session_state.run}"
+            label="Circle Boundary Color", value=default_dict["last_circle_color"],
+            help="Circle Boundary.", key=f"last_circle_color_{st.session_state.run}"
         )
 
         default_dict["last_circle_color"] = last_circle_color
 
         # get last circle linewidth
         last_circle_lw = st.number_input(
-            label="Last Circle Linewidth", min_value=0.0, format="%.3f",
+            label="Circle Boundary Linewidth", min_value=0.0, format="%.3f",
             value=default_dict["last_circle_lw"], key=f"last_circle_lw_{st.session_state.run}",
-            help="Enter linewidth for the last circle."
+            help="Circle Boundary."
         )
 
         default_dict["last_circle_lw"] = last_circle_lw
 
         # get last circle linestyle
         last_circle_ls = st.selectbox(
-            label="Last Circle Linestyle", options=["None", "solid", "dashed", "dashdot", "dotted"],
+            label="Circle Boundary Linestyle", options=["None", "solid", "dashed", "dashdot", "dotted"],
             index=default_dict["last_circle_ls"], key=f"last_circle_ls_{st.session_state.run}",
-            help="Choose a linestyle for the last circle."
+            help="Circle Boundary."
         )
 
         default_dict["last_circle_ls"] = last_circle_ls

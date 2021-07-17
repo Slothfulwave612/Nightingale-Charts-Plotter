@@ -260,7 +260,7 @@ class PizzaPlotter:
             legend_texts = self.legend_texts.split(' ')
             legend_texts = [x.replace('~', ' ') for x in legend_texts]
 
-            colors = colors + [colors[-1] * (len(legend_texts) - len(colors))]
+            colors = colors + [colors[-1]] * (len(legend_texts) - len(colors))
             temp_text = (' ' * self.legend_space).join(['<' + x + '>' for x in legend_texts])
             high_colors = [{"color": x} for x in colors[:len(legend_texts)]]
 
