@@ -253,8 +253,13 @@ class PizzaPlotter:
         # add legend
         if len(self.legend_texts) > 0:
             # fetch colors
-            used = set()
-            colors = [x for x in self.slice_colors if x not in used and (used.add(x) or True)]
+            colors = dict()
+
+            for color in self.slice_colors:
+                if colors.get(color.lower()) is None:
+                    colors[color.lower()] = True
+
+            colors = list(colors.keys())
 
             # fetch texts
             legend_texts = self.legend_texts.split(' ')
