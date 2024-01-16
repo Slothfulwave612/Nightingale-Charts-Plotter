@@ -1,6 +1,6 @@
 # Nightingale-Charts-Plotter
 
-* To access the online hosted version of this web app click [here](https://nightingale-charts-plotter.herokuapp.com/).
+* To access the online hosted version of this web app click [here](https://slothfulwave612-nightingale-charts-plotter-srcwebapp-tyj9j6.streamlit.app/).
 
 * To install this web app on your local system follow these steps (prerequisite -> your system should have anaconda installed):
 
