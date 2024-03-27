@@ -9,7 +9,7 @@ def pick_params_values(num_params, default_dict):
         # get default values
         if i > default_dict["num_params"] - 1:
             param_name = f"Parameter {i+1}"
-            value = 69.0
+            value = 77.0
         else:
             param_name = default_dict["params"][i]
             value = default_dict["values"][i]
